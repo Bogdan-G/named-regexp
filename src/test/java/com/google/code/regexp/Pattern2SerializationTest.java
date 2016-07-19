@@ -30,16 +30,16 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * Verifies that {@link Pattern} is {@link Serializable}
+ * Verifies that {@link Pattern2} is {@link Serializable}
  */
-public class PatternSerializationTest {
-    static Pattern pattIn;
-    static Pattern pattOut;
+public class Pattern2SerializationTest {
+    static Pattern2 pattIn;
+    static Pattern2 pattOut;
 
     @BeforeClass
     static public void beforeClass() throws IOException, ClassNotFoundException {
-        pattIn = Pattern.compile("(?<foo>\\w+) (?<bar>\\d+) (.*)\\s+");
-        File file = File.createTempFile("pattern", ".ser");
+        pattIn = Pattern2.compile("(?<foo>\\w+) (?<bar>\\d+) (.*)\\s+");
+        File file = File.createTempFile("Pattern2", ".ser");
         try {
             FileOutputStream fos = new FileOutputStream(file);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -52,7 +52,7 @@ public class PatternSerializationTest {
             FileInputStream fis = new FileInputStream(file);
             ObjectInputStream ois = new ObjectInputStream(fis);
             try {
-                pattOut = (Pattern) ois.readObject();
+                pattOut = (Pattern2) ois.readObject();
             } finally {
                 ois.close();
             }
@@ -62,7 +62,7 @@ public class PatternSerializationTest {
     }
 
     @Test
-    public void deserializedPatternMatchesOriginal() {
+    public void deserializedPattern2MatchesOriginal() {
         assertThat(pattOut, is(equalTo(pattIn)));
     }
 

@@ -23,7 +23,7 @@
  * questions.
  */
 
-package java.org.bogdang.modifications.regex;
+package org.bogdang.modifications.regex;
 
 import java.util.HashMap;
 import java.util.Locale;

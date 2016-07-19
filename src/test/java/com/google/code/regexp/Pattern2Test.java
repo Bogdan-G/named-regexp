@@ -23,165 +23,165 @@ import static org.junit.Assert.assertFalse;
 
 import java.util.List;
 import java.util.Map;
-import java.org.bogdang.modifications.regex.PatternSyntaxException;
+import org.bogdang.modifications.regex.PatternSyntaxException;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 /**
- * Tests {@link Pattern}
+ * Tests {@link Pattern2}
  */
-public class PatternTest {
+public class Pattern2Test {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
     // REGEX-9, First test needs to check for infinite loop in
-    // NamedPattern.compile() (seen in Android) because all other
+    // NamedPattern2.compile() (seen in Android) because all other
     // tests rely on it.
     @Test( timeout = 2000 )
-    public void testNoInfiniteLoopInNamedPatternCompile() {
-        assertNotNull(Pattern.compile("(?<named>x)"));
+    public void testNoInfiniteLoopInNamedPattern2Compile() {
+        assertNotNull(Pattern2.compile("(?<named>x)"));
     }
 
     @Test
     public void testIndexOfAcceptsClassName() {
-        Pattern p = Pattern.compile("(?<com.example.foo>x)");
+        Pattern2 p = Pattern2.compile("(?<com.example.foo>x)");
         assertEquals(0, p.indexOf("com.example.foo"));
     }
 
     @Test
     public void testIndexOfAcceptsNameWithSpacesAndPunctuation() {
-        Pattern p = Pattern.compile("(?<  Lorem ipsum dolor sit amet, consectetur adipisicing elit>x)");
+        Pattern2 p = Pattern2.compile("(?<  Lorem ipsum dolor sit amet, consectetur adipisicing elit>x)");
         assertEquals(0, p.indexOf("  Lorem ipsum dolor sit amet, consectetur adipisicing elit"));
     }
 
     @Test
     public void testIndexOfAcceptsNameWithClosingAngleBracket() {
-        Pattern p = Pattern.compile("(?<foo bar > should not grab this bracket> x)");
+        Pattern2 p = Pattern2.compile("(?<foo bar > should not grab this bracket> x)");
         assertEquals(0, p.indexOf("foo bar "));
     }
 
     @Test
     public void testIndexOfAcceptsNameWithNewLines() {
-        Pattern p = Pattern.compile("(?<Lorem ipsum dolor sit amet,\n consectetur adipisicing elit>x)");
+        Pattern2 p = Pattern2.compile("(?<Lorem ipsum dolor sit amet,\n consectetur adipisicing elit>x)");
         assertEquals(0, p.indexOf("Lorem ipsum dolor sit amet,\n consectetur adipisicing elit"));
     }
 
     @Test
     public void testIndexOfNameWithUnicodeChars() {
-        Pattern p = Pattern.compile("(?<gefräßig>x)");
+        Pattern2 p = Pattern2.compile("(?<gefräßig>x)");
         assertEquals(0, p.indexOf("gefräßig"));
     }
 
     @Test
     public void testIndexOfNamedGroup() {
-        Pattern p = Pattern.compile("(?<named>x)");
+        Pattern2 p = Pattern2.compile("(?<named>x)");
         assertEquals(0, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfNamedGroupAfterUnnamedGroups() {
-        Pattern p = Pattern.compile("(a)(b)(?<named>x)");
+        Pattern2 p = Pattern2.compile("(a)(b)(?<named>x)");
         assertEquals(2, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfNamedGroupAfterNoncaptureGroups() {
-        Pattern p = Pattern.compile("(?:c)(?<named>x)");
+        Pattern2 p = Pattern2.compile("(?:c)(?<named>x)");
         assertEquals(0, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfNamedGroupAfterUnnamedAndNoncaptureGroups() {
-        Pattern p = Pattern.compile("(a)(b)(?:c)(?<named>x)");
+        Pattern2 p = Pattern2.compile("(a)(b)(?:c)(?<named>x)");
         assertEquals(2, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfNamedGroupAfterAnotherNamedGroup() {
-        Pattern p = Pattern.compile("(a)(?<foo>)(?:c)(?<named>x)");
+        Pattern2 p = Pattern2.compile("(a)(?<foo>)(?:c)(?<named>x)");
         assertEquals(2, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfNestedNamedGroup() {
-        Pattern p = Pattern.compile("(a)(?<foo>b)(?:c)(?<bar>d(?<named>x))");
+        Pattern2 p = Pattern2.compile("(a)(?<foo>b)(?:c)(?<bar>d(?<named>x))");
         assertEquals(3, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfNamedGroupAfterEscapedParen() {
-        Pattern p = Pattern.compile("\\(a\\)\\((b)\\)(?:c)(?<named>x)");
+        Pattern2 p = Pattern2.compile("\\(a\\)\\((b)\\)(?:c)(?<named>x)");
         assertEquals(1, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfNamedGroupAfterSpecialConstruct1() {
-        Pattern p = Pattern.compile("(?idsumx-idsumx)(?=b)(?!x)(?<named>x)");
+        Pattern2 p = Pattern2.compile("(?idsumx-idsumx)(?=b)(?!x)(?<named>x)");
         assertEquals(0, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfNamedGroupBeforeSpecialConstruct1() {
-        Pattern p = Pattern.compile("(?<named>x)(?idsumx-idsumx)(?=b)(?!x)");
+        Pattern2 p = Pattern2.compile("(?<named>x)(?idsumx-idsumx)(?=b)(?!x)");
         assertEquals(0, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfNamedGroupContainingSpecialConstruct() {
-        Pattern p = Pattern.compile("\\d{2}/\\d{2}/\\d{4}: EXCEPTION - (?<exception>(?s)(.+(?:Exception|Error)[^\\n]+(?:\\s++at [^\\n]+)++)(?:\\s*\\.{3}[^\\n]++)?\\s*)\\n");
+        Pattern2 p = Pattern2.compile("\\d{2}/\\d{2}/\\d{4}: EXCEPTION - (?<exception>(?s)(.+(?:Exception|Error)[^\\n]+(?:\\s++at [^\\n]+)++)(?:\\s*\\.{3}[^\\n]++)?\\s*)\\n");
         assertEquals(0, p.indexOf("exception"));
     }
 
     @Test
     public void testIndexOfNamedGroupAfterNonEscapedParenInCharacterClass() {
-        Pattern p = Pattern.compile("(a)(?<foo>[()])(?:c)(?<named>x)");
+        Pattern2 p = Pattern2.compile("(a)(?<foo>[()])(?:c)(?<named>x)");
         assertEquals(2, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfNamedGroupAfterEscapedParensInCharacterClass() {
-        Pattern p = Pattern.compile("(a)(?<foo>[\\(\\)])(?:c)(?<named>x)");
+        Pattern2 p = Pattern2.compile("(a)(?<foo>[\\(\\)])(?:c)(?<named>x)");
         assertEquals(2, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfNamedGroupAfterEscapedOpenParenInCharacterClass() {
-        Pattern p = Pattern.compile("(a)(?<foo>[\\()])(?:c)(?<named>x)");
+        Pattern2 p = Pattern2.compile("(a)(?<foo>[\\()])(?:c)(?<named>x)");
         assertEquals(2, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfNamedGroupAfterEscapedCloseParenInCharacterClass() {
-        Pattern p = Pattern.compile("(a)(?<foo>[(\\)])(?:c)(?<named>x)");
+        Pattern2 p = Pattern2.compile("(a)(?<foo>[(\\)])(?:c)(?<named>x)");
         assertEquals(2, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfNamedGroupAfterSlashedParensInCharacterClass() {
         // double-slashes in a character class are literal slashes, not escapes
-        Pattern p = Pattern.compile("(a)(?<foo>[\\\\(\\\\)])(?:c)(?<named>x)");
+        Pattern2 p = Pattern2.compile("(a)(?<foo>[\\\\(\\\\)])(?:c)(?<named>x)");
         assertEquals(2, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfNamedGroupAfterSlashedOpenParenInCharacterClass() {
         // double-slashes in a character class are literal slashes, not escapes
-        Pattern p = Pattern.compile("(a)(?<foo>[\\\\()])(?:c)(?<named>x)");
+        Pattern2 p = Pattern2.compile("(a)(?<foo>[\\\\()])(?:c)(?<named>x)");
         assertEquals(2, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfNamedGroupAfterSlashedCloseParenInCharacterClass() {
         // double-slashes in a character class are literal slashes, not escapes
-        Pattern p = Pattern.compile("(a)(?<foo>[(\\\\)])(?:c)(?<named>x)");
+        Pattern2 p = Pattern2.compile("(a)(?<foo>[(\\\\)])(?:c)(?<named>x)");
         assertEquals(2, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfNamedGroupAfterNonEscapedParenInCharClassWithEscapedCloseBracket() {
-        Pattern p = Pattern.compile("(a)(?<foo>[\\]()])(?:c)(?<named>x)");
+        Pattern2 p = Pattern2.compile("(a)(?<foo>[\\]()])(?:c)(?<named>x)");
         assertEquals(2, p.indexOf("named"));
     }
 
@@ -190,85 +190,85 @@ public class PatternTest {
         // since the open-bracket is escaped, it doesn't create a character class,
         // so the parentheses inside the "foo" group is a capturing group (that
         // currently captures nothing but still valid regex and thus counted)
-        Pattern p = Pattern.compile("(a)(?<foo>\\[()])(?:c)(?<named>x)");
+        Pattern2 p = Pattern2.compile("(a)(?<foo>\\[()])(?:c)(?<named>x)");
         assertEquals(3, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfNotFound() {
-        Pattern p = Pattern.compile("(a)(b)(?:c)(?<named>x)");
+        Pattern2 p = Pattern2.compile("(a)(b)(?:c)(?<named>x)");
         assertEquals(-1, p.indexOf("dummy"));
     }
 
     @Test
     public void testIndexOfWithPositiveLookbehind() {
-        Pattern p = Pattern.compile("(a)(b)(?<=c)(?<named>x)");
+        Pattern2 p = Pattern2.compile("(a)(b)(?<=c)(?<named>x)");
         assertEquals(2, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfWithNegativeLookbehind() {
-        Pattern p = Pattern.compile("(a)(b)(?<!c)(?<named>x)");
+        Pattern2 p = Pattern2.compile("(a)(b)(?<!c)(?<named>x)");
         assertEquals(2, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfWithNegativeLookbehindAtBeginning() {
-        Pattern p = Pattern.compile("(?<!a)(b)(c)(?<named>x)");
+        Pattern2 p = Pattern2.compile("(?<!a)(b)(c)(?<named>x)");
         assertEquals(2, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfWithPositiveLookbehindAtBeginning() {
-        Pattern p = Pattern.compile("(?<=a)(b)(c)(?<named>x)");
+        Pattern2 p = Pattern2.compile("(?<=a)(b)(c)(?<named>x)");
         assertEquals(2, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfWithPositiveLookahead() {
-        Pattern p = Pattern.compile("(a)(b)(?=c)(?<named>x)");
+        Pattern2 p = Pattern2.compile("(a)(b)(?=c)(?<named>x)");
         assertEquals(2, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfWithNegativeLookahead() {
-        Pattern p = Pattern.compile("(a)(b)(?!c)(?<named>x)");
+        Pattern2 p = Pattern2.compile("(a)(b)(?!c)(?<named>x)");
         assertEquals(2, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfWithFlags() {
-        Pattern p = Pattern.compile("(a)(b)(?idsumx)(?<named>x)");
+        Pattern2 p = Pattern2.compile("(a)(b)(?idsumx)(?<named>x)");
         assertEquals(2, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfWithFlagsAndExtraNoCapture() {
-        Pattern p = Pattern.compile("(a)(b)(?idsumx:Z)(?<named>x)");
+        Pattern2 p = Pattern2.compile("(a)(b)(?idsumx:Z)(?<named>x)");
         assertEquals(2, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfNamedGroupAtBeginning() {
-        Pattern p = Pattern.compile("(?<named>x)(a)(b)(?:c)");
+        Pattern2 p = Pattern2.compile("(?<named>x)(a)(b)(?:c)");
         assertEquals(0, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfNamedGroupAtMiddle() {
-        Pattern p = Pattern.compile("(a)(?<named>x)(b)(?:c)");
+        Pattern2 p = Pattern2.compile("(a)(?<named>x)(b)(?:c)");
         assertEquals(1, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfWithMultipleGroupsWithSameName() {
-        Pattern p = Pattern.compile("(a)(?<named>x)(b)(?:c)(?<named>y)");
+        Pattern2 p = Pattern2.compile("(a)(?<named>x)(b)(?:c)(?<named>y)");
         assertEquals(3, p.indexOf("named", 1));
     }
 
     @Test
     public void testIndexOfWithInvalidPositiveInstanceIndex() {
-        Pattern p = Pattern.compile("(a)(?<named>x)(b)(?:c)(?<named>y)");
+        Pattern2 p = Pattern2.compile("(a)(?<named>x)(b)(?:c)(?<named>y)");
         thrown.expect(IndexOutOfBoundsException.class);
         thrown.expectMessage("Index: 10000000, Size: 2");
         assertEquals(-1, p.indexOf("named", 10000000));
@@ -276,7 +276,7 @@ public class PatternTest {
 
     @Test
     public void testIndexOfWithInvalidNegativeInstanceIndex() {
-        Pattern p = Pattern.compile("(a)(?<named>x)(b)(?:c)(?<named>y)");
+        Pattern2 p = Pattern2.compile("(a)(?<named>x)(b)(?:c)(?<named>y)");
         // Negative index causes ArrayIndexOutOfBoundsException (which
         // is a subclass of IndexOutOfBoundsException)
         thrown.expect(ArrayIndexOutOfBoundsException.class);
@@ -287,30 +287,30 @@ public class PatternTest {
     @Test
     public void testIndexOfNamedGroupAfterQuoteEscapedBracket() {
         // open-bracket escaped, so it's not a character class
-        Pattern p = Pattern.compile("(a)(b)\\Q[\\E(?<named>c)\\]");
+        Pattern2 p = Pattern2.compile("(a)(b)\\Q[\\E(?<named>c)\\]");
         assertEquals(2, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfNamedGroupAfterSlashEscapedBracket() {
         // open-bracket escaped, so it's not a character class
-        Pattern p = Pattern.compile("(a)(b)\\[(?<named>c)\\]");
+        Pattern2 p = Pattern2.compile("(a)(b)\\[(?<named>c)\\]");
         assertEquals(2, p.indexOf("named"));
     }
 
     @Test
-    public void testIndexOfNamedGroupAfterQuoteEscapedPattern() {
-        // The quote-escaped string looks like a real regex pattern, but
-        // it's a literal string, so ignore it. The pattern after that
+    public void testIndexOfNamedGroupAfterQuoteEscapedPattern2() {
+        // The quote-escaped string looks like a real regex Pattern2, but
+        // it's a literal string, so ignore it. The Pattern2 after that
         // should still be found
-        Pattern p = Pattern.compile("(?<foo>a)\\Q(?<bar>b)(?<baz>c)(d)  [  \\E(?<named>e)  \\Q]\\E");
+        Pattern2 p = Pattern2.compile("(?<foo>a)\\Q(?<bar>b)(?<baz>c)(d)  [  \\E(?<named>e)  \\Q]\\E");
         assertEquals(1, p.indexOf("named"));
     }
 
     @Test
     public void testIndexOfNamedGroupInEscapedQuote() {
         // since quote-escape is itself escaped, it's actually a literal \Q and \E
-        Pattern p = Pattern.compile("(a)\\\\Q(?<named>\\d+)\\\\E");
+        Pattern2 p = Pattern2.compile("(a)\\\\Q(?<named>\\d+)\\\\E");
         assertEquals(1, p.indexOf("named"));
     }
 
@@ -318,42 +318,42 @@ public class PatternTest {
     public void testInvalidCloseQuoteEscapeSequence() {
         // when \E present, \Q must also be present, so the following is invalid syntax
         thrown.expect(PatternSyntaxException.class);
-        Pattern.compile("(a)\\\\Q(?<named>d)\\E");
+        Pattern2.compile("(a)\\\\Q(?<named>d)\\E");
     }
 
     @Test
-    public void testNamedPatternGetsOriginalPattern() {
+    public void testNamedPattern2GetsOriginalPattern2() {
         final String ORIG_PATT = "(a)(b)(?:c)(?<named>x)";
-        Pattern p = Pattern.compile(ORIG_PATT);
+        Pattern2 p = Pattern2.compile(ORIG_PATT);
         assertEquals(ORIG_PATT, p.namedPattern());
     }
 
     @Test
-    public void testStandardPatternGetsOrigWithoutNamed() {
+    public void testStandardPattern2GetsOrigWithoutNamed() {
         final String ORIG_PATT = "(a)(b)(?:c)(?<named>x)";
         final String PATT_W_NO_NAMED_GRPS = "(a)(b)(?:c)(x)";
-        Pattern p = Pattern.compile(ORIG_PATT);
+        Pattern2 p = Pattern2.compile(ORIG_PATT);
         assertEquals(PATT_W_NO_NAMED_GRPS, p.standardPattern());
     }
 
     @Test
-    public void testNamedPatternAfterFlagsAndLookarounds() {
+    public void testNamedPattern2AfterFlagsAndLookarounds() {
         final String ORIG_PATT = "(?idsumx-idsumx)(?=b)(?!x)(?<named>x)";
-        Pattern p = Pattern.compile(ORIG_PATT);
+        Pattern2 p = Pattern2.compile(ORIG_PATT);
         assertEquals(ORIG_PATT, p.namedPattern());
     }
 
     @Test
-    public void testNamedPatternAfterEscapedParen() {
+    public void testNamedPattern2AfterEscapedParen() {
         final String ORIG_PATT = "\\(a\\)\\((b)\\)(?:c)(?<named>x)";
-        Pattern p = Pattern.compile(ORIG_PATT);
+        Pattern2 p = Pattern2.compile(ORIG_PATT);
         assertEquals(ORIG_PATT, p.namedPattern());
     }
 
     @Test
     public void testGroupNames() {
         final String PATT = "(foo)(?<X>a)(?<Y>b)(?<Z>c)(bar)";
-        Pattern p = Pattern.compile(PATT);
+        Pattern2 p = Pattern2.compile(PATT);
         assertNotNull(p.groupNames());
         assertEquals(3, p.groupNames().size());
         assertEquals("X", p.groupNames().get(0));
@@ -364,7 +364,7 @@ public class PatternTest {
     @Test
     public void testGroupInfoMapHasNamesAsKeys() {
         final String PATT = "(foo)(?<X>a)(?<Y>b)(bar)(?<Z>c)(?<Z>d)"; // two groups named "Z"
-        Pattern p = Pattern.compile(PATT);
+        Pattern2 p = Pattern2.compile(PATT);
         Map<String,List<GroupInfo> > map = p.groupInfo();
         assertNotNull(map);
         assertEquals(3, map.size());
@@ -376,7 +376,7 @@ public class PatternTest {
     @Test
     public void testGroupInfoMapHasCorrectPosAndGroupIndex() {
         final String PATT = "(foo)(?<X>a)(?<Y>b)(bar)(?<Z>c)(?<Z>d)"; // two groups named "Z"
-        Pattern p = Pattern.compile(PATT);
+        Pattern2 p = Pattern2.compile(PATT);
         Map<String,List<GroupInfo> > map = p.groupInfo();
         assertNotNull(map);
 
@@ -401,53 +401,53 @@ public class PatternTest {
     }
 
     @Test(expected = PatternSyntaxException.class)
-    public void testEscapedLeftParenCausesPatternException() {
+    public void testEscapedLeftParenCausesPattern2Exception() {
         final String PATT = "\\(?<name>abc)";
-        Pattern.compile(PATT);
+        Pattern2.compile(PATT);
     }
 
     @Test
-    public void testIgnoresPatternWithEscapedParens() {
+    public void testIgnoresPattern2WithEscapedParens() {
         final String PATT = "\\(?<name>abc\\)";
-        Pattern p = Pattern.compile(PATT);
+        Pattern2 p = Pattern2.compile(PATT);
         assertEquals(PATT, p.standardPattern());
     }
 
     @Test
-    public void testTakesPatternWithEscapedEscape() {
+    public void testTakesPattern2WithEscapedEscape() {
         // it looks like an escaped parenthesis, but the escape char is
         // itself escaped and is thus a literal
         final String PATT = "\\\\(?<name>abc)";
-        Pattern p = Pattern.compile(PATT);
+        Pattern2 p = Pattern2.compile(PATT);
         assertEquals("\\\\(abc)", p.standardPattern());
     }
 
     @Test
-    public void testIgnoresPatternWithOddNumberEscapes() {
+    public void testIgnoresPattern2WithOddNumberEscapes() {
         final String PATT = "\\\\\\(?<name>abc\\)";
-        Pattern p = Pattern.compile(PATT);
+        Pattern2 p = Pattern2.compile(PATT);
         assertEquals(PATT, p.standardPattern());
     }
 
     @Test
-    public void testTakesPatternWithOddNumberEscapesButWithSpace() {
+    public void testTakesPattern2WithOddNumberEscapesButWithSpace() {
         final String PATT = "\\ \\\\(?<name>abc)";
-        Pattern p = Pattern.compile(PATT);
+        Pattern2 p = Pattern2.compile(PATT);
         assertEquals("\\ \\\\(abc)", p.standardPattern());
     }
 
     @Test
     public void testCompileRegexWithFlags() {
         final String PATT = "(?<name>abc) # comment 1";
-        int flags = Pattern.CASE_INSENSITIVE | Pattern.COMMENTS;
-        Pattern p = Pattern.compile(PATT, flags);
+        int flags = Pattern2.CASE_INSENSITIVE | Pattern2.COMMENTS;
+        Pattern2 p = Pattern2.compile(PATT, flags);
         assertEquals(PATT, p.namedPattern());
         assertEquals(flags, p.flags());
     }
 
     @Test
     public void testSplitGetsArrayOfTextAroundMatches() {
-        Pattern p = Pattern.compile("(a)(b)(?:c)(?<named>x)");
+        Pattern2 p = Pattern2.compile("(a)(b)(?:c)(?<named>x)");
         assertArrayEquals(new String[]{"foo ", " bar "}, p.split("foo abcx bar abcx"));
         // when the limit is specified, the last element contains
         // the remainder of the string
@@ -456,53 +456,53 @@ public class PatternTest {
 
     @Test
     public void testEqualsNullGetsFalse() {
-        Pattern p = Pattern.compile("(a)(b)(?:c)(?<named>x)");
+        Pattern2 p = Pattern2.compile("(a)(b)(?:c)(?<named>x)");
         assertFalse(p.equals(null));
     }
 
     @Test
     public void testEqualsDiffDataTypeGetsFalse() {
-        Pattern p = Pattern.compile("(a)(b)(?:c)(?<named>x)");
+        Pattern2 p = Pattern2.compile("(a)(b)(?:c)(?<named>x)");
         assertFalse(p.equals(new Object()));
     }
 
     @Test
-    public void testEqualsWithSamePatternAndFlagsGetsTrue() {
-        Pattern p1 = Pattern.compile("(a)(b)(?:c)(?<named>x)");
-        Pattern p2 = Pattern.compile("(a)(b)(?:c)(?<named>x)");
+    public void testEqualsWithSamePattern2AndFlagsGetsTrue() {
+        Pattern2 p1 = Pattern2.compile("(a)(b)(?:c)(?<named>x)");
+        Pattern2 p2 = Pattern2.compile("(a)(b)(?:c)(?<named>x)");
         assertTrue(p1.equals(p2));
     }
 
     @Test
-    public void testEqualsWithSamePatternButDiffFlagsGetsFalse() {
-        Pattern p1 = Pattern.compile("(a)(b)(?:c)(?<named>x)");
-        Pattern p2 = Pattern.compile("(a)(b)(?:c)(?<named>x)", Pattern.CASE_INSENSITIVE);
+    public void testEqualsWithSamePattern2ButDiffFlagsGetsFalse() {
+        Pattern2 p1 = Pattern2.compile("(a)(b)(?:c)(?<named>x)");
+        Pattern2 p2 = Pattern2.compile("(a)(b)(?:c)(?<named>x)", Pattern2.CASE_INSENSITIVE);
         assertFalse(p1.equals(p2));
     }
 
     @Test
-    public void testEqualsWithSameFlagsButDiffPatternGetsFalse() {
-        Pattern p1 = Pattern.compile("(a)(b)(?:c)(?<named>x)", Pattern.DOTALL);
-        Pattern p2 = Pattern.compile("(?<named>x)", Pattern.DOTALL);
+    public void testEqualsWithSameFlagsButDiffPattern2GetsFalse() {
+        Pattern2 p1 = Pattern2.compile("(a)(b)(?:c)(?<named>x)", Pattern2.DOTALL);
+        Pattern2 p2 = Pattern2.compile("(?<named>x)", Pattern2.DOTALL);
         assertFalse(p1.equals(p2));
     }
 
     @Test
     public void testEqualsGetsTrueForSameInstance() {
-        Pattern p = Pattern.compile("(a)(b)(?:c)(?<named>x)");
+        Pattern2 p = Pattern2.compile("(a)(b)(?:c)(?<named>x)");
         assertTrue(p.equals(p));
     }
 
     @Test
     public void testToString() {
-        String s = Pattern.compile("(a)(b)(?:c)(?<named>x)").toString();
+        String s = Pattern2.compile("(a)(b)(?:c)(?<named>x)").toString();
         assertNotNull(s);
         assertTrue(s.trim().length() > 0);
     }
 
     @Test
-    public void testCompileWithBackrefGetsStandardPatternWithCorrectGroupIndex() {
-        Pattern p = Pattern.compile("(?<foo>xyz)(?<bar>\\d+)abc\\k<bar>");
+    public void testCompileWithBackrefGetsStandardPattern2WithCorrectGroupIndex() {
+        Pattern2 p = Pattern2.compile("(?<foo>xyz)(?<bar>\\d+)abc\\k<bar>");
         assertEquals("(xyz)(\\d+)abc\\2", p.standardPattern());
     }
 
@@ -512,50 +512,50 @@ public class PatternTest {
         thrown.expectMessage("unknown group name near index 11\n" +
                              "(xyz)abc\\k<bar>\n" +
                              "           ^");
-        Pattern.compile("(?<foo>xyz)abc\\k<bar>");
+        Pattern2.compile("(?<foo>xyz)abc\\k<bar>");
     }
 
     @Test
     public void testCompileWithEscapedBackref() {
         // escaped backrefs are not translated
-        Pattern p = Pattern.compile("(?<foo>xyz)(?<bar>\\d+)abc\\\\k<bar>");
+        Pattern2 p = Pattern2.compile("(?<foo>xyz)(?<bar>\\d+)abc\\\\k<bar>");
         assertEquals("(xyz)(\\d+)abc\\\\k<bar>", p.standardPattern());
     }
 
     @Test
     public void testCompileBackrefAcceptsClassName() {
         String GROUP_NAME = "com.example.foo";
-        Pattern p = Pattern.compile("(?<foo>xyz)(?<" + GROUP_NAME + ">\\d+)abc\\k<" + GROUP_NAME + ">");
+        Pattern2 p = Pattern2.compile("(?<foo>xyz)(?<" + GROUP_NAME + ">\\d+)abc\\k<" + GROUP_NAME + ">");
         assertEquals("(xyz)(\\d+)abc\\2", p.standardPattern());
     }
 
     @Test
     public void testCompileBackrefAcceptsNameWithSpacesAndPunctuation() {
         String GROUP_NAME = "  Lorem ipsum dolor sit amet, consectetur adipisicing elit";
-        Pattern p = Pattern.compile("(?<foo>xyz)(?<" + GROUP_NAME + ">\\d+)abc\\k<" + GROUP_NAME + ">");
+        Pattern2 p = Pattern2.compile("(?<foo>xyz)(?<" + GROUP_NAME + ">\\d+)abc\\k<" + GROUP_NAME + ">");
         assertEquals("(xyz)(\\d+)abc\\2", p.standardPattern());
     }
 
     @Test
     public void testCompileBackrefTakesFirstClosingAngleBracket() {
         String GROUP_NAME = "foo bar  >";
-        Pattern p = Pattern.compile("(?<foo>xyz)(?<" + GROUP_NAME + ">\\d+)abc\\k<" + GROUP_NAME + ">");
+        Pattern2 p = Pattern2.compile("(?<foo>xyz)(?<" + GROUP_NAME + ">\\d+)abc\\k<" + GROUP_NAME + ">");
         // The first closing bracket encountered is used. The second becomes a literal,
-        // so we check for it in the standard pattern (two actually).
+        // so we check for it in the standard Pattern2 (two actually).
         assertEquals("(xyz)(>\\d+)abc\\2>", p.standardPattern());
     }
 
     @Test
     public void testCompileBackrefAcceptsNameWithNewLines() {
         String GROUP_NAME = "Lorem ipsum dolor sit amet,\n consectetur adipisicing elit";
-        Pattern p = Pattern.compile("(?<foo>xyz)(?<" + GROUP_NAME + ">\\d+)abc\\k<" + GROUP_NAME + ">");
+        Pattern2 p = Pattern2.compile("(?<foo>xyz)(?<" + GROUP_NAME + ">\\d+)abc\\k<" + GROUP_NAME + ">");
         assertEquals("(xyz)(\\d+)abc\\2", p.standardPattern());
     }
 
     @Test
     public void testCompileBackrefAcceptsNameWithUnicodeChars() {
         String GROUP_NAME = "gefräßig";
-        Pattern p = Pattern.compile("(?<foo>xyz)(?<" + GROUP_NAME + ">\\d+)abc\\k<" + GROUP_NAME + ">");
+        Pattern2 p = Pattern2.compile("(?<foo>xyz)(?<" + GROUP_NAME + ">\\d+)abc\\k<" + GROUP_NAME + ">");
         assertEquals("(xyz)(\\d+)abc\\2", p.standardPattern());
     }
 }

@@ -23,7 +23,7 @@
  * questions.
  */
 
-package java.org.bogdang.modifications.regex;
+package org.bogdang.modifications.regex;
 
 
 /**
@@ -1035,7 +1035,7 @@ public final class Matcher implements MatchResult {
      *
      * @return <tt>true</tt> iff this matcher is using transparent bounds,
      *         <tt>false</tt> otherwise.
-     * @see java.org.bogdang.modifications.regex.Matcher#useTransparentBounds(boolean)
+     * @see org.bogdang.modifications.regex.Matcher#useTransparentBounds(boolean)
      * @since 1.5
      */
     public boolean hasTransparentBounds() {
@@ -1065,7 +1065,7 @@ public final class Matcher implements MatchResult {
      * @param  b a boolean indicating whether to use opaque or transparent
      *         regions
      * @return this matcher
-     * @see java.org.bogdang.modifications.regex.Matcher#hasTransparentBounds
+     * @see org.bogdang.modifications.regex.Matcher#hasTransparentBounds
      * @since 1.5
      */
     public Matcher useTransparentBounds(boolean b) {
@@ -1086,7 +1086,7 @@ public final class Matcher implements MatchResult {
      *
      * @return <tt>true</tt> iff this matcher is using anchoring bounds,
      *         <tt>false</tt> otherwise.
-     * @see java.org.bogdang.modifications.regex.Matcher#useAnchoringBounds(boolean)
+     * @see org.bogdang.modifications.regex.Matcher#useAnchoringBounds(boolean)
      * @since 1.5
      */
     public boolean hasAnchoringBounds() {
@@ -1111,7 +1111,7 @@ public final class Matcher implements MatchResult {
      *
      * @param  b a boolean indicating whether or not to use anchoring bounds.
      * @return this matcher
-     * @see java.org.bogdang.modifications.regex.Matcher#hasAnchoringBounds
+     * @see org.bogdang.modifications.regex.Matcher#hasAnchoringBounds
      * @since 1.5
      */
     public Matcher useAnchoringBounds(boolean b) {
@@ -1129,7 +1129,7 @@ public final class Matcher implements MatchResult {
      */
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("java.org.bogdang.modifications.regex.Matcher");
+        sb.append("org.bogdang.modifications.regex.Matcher");
         sb.append("[pattern=" + pattern());
         sb.append(" region=");
         sb.append(regionStart() + "," + regionEnd());

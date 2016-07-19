@@ -19,24 +19,25 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import org.bogdang.modifications.regex.*;
 
 /**
  * An engine that performs match operations on a character sequence by
- * interpreting a {@link Pattern}. This is a wrapper for {@link java.org.bogdang.modifications.regex.Matcher}.
+ * interpreting a {@link Pattern}. This is a wrapper for {@link Matcher}.
  *
  * @since 0.1.9
  */
-public class Matcher implements MatchResult {
+public class Matcher2 implements MatchResult2 {
 
-    private java.org.bogdang.modifications.regex.Matcher matcher;
-    private Pattern parentPattern;
+    private Matcher matcher;
+    private Pattern2 parentPattern;
 
-    Matcher(Pattern parentPattern, java.org.bogdang.modifications.regex.MatchResult matcher) {
+    Matcher2(Pattern2 parentPattern, MatchResult matcher) {
         this.parentPattern = parentPattern;
-        this.matcher = (java.org.bogdang.modifications.regex.Matcher) matcher;
+        this.matcher = (Matcher) matcher;
     }
 
-    Matcher(Pattern parentPattern, CharSequence input) {
+    Matcher2(Pattern2 parentPattern, CharSequence input) {
         this.parentPattern = parentPattern;
         this.matcher = parentPattern.pattern().matcher(input);
     }
@@ -46,7 +47,7 @@ public class Matcher implements MatchResult {
      *
      * @return the pattern
      */
-    public java.org.bogdang.modifications.regex.Pattern standardPattern() {
+    public Pattern standardPattern() {
         return matcher.pattern();
     }
 
@@ -55,7 +56,7 @@ public class Matcher implements MatchResult {
      *
      * @return the pattern
      */
-    public Pattern namedPattern() {
+    public Pattern2 namedPattern() {
         return parentPattern;
     }
 
@@ -65,7 +66,7 @@ public class Matcher implements MatchResult {
      * @param newPattern the new pattern
      * @return this Matcher
      */
-    public Matcher usePattern(Pattern newPattern) {
+    public Matcher2 usePattern(Pattern2 newPattern) {
         if (newPattern == null) {
             throw new IllegalArgumentException("newPattern cannot be null");
         }
@@ -79,7 +80,7 @@ public class Matcher implements MatchResult {
      *
      * @return this Matcher
      */
-    public Matcher reset() {
+    public Matcher2 reset() {
         matcher.reset();
         return this;
     }
@@ -96,7 +97,7 @@ public class Matcher implements MatchResult {
      * @param input The new input character sequence
      * @return this Matcher
      */
-    public Matcher reset(CharSequence input) {
+    public Matcher2 reset(CharSequence input) {
         matcher.reset(input);
         return this;
     }
@@ -120,8 +121,8 @@ public class Matcher implements MatchResult {
      *
      * @return a NamedMatchResult with the state of this matcher
      */
-    public MatchResult toMatchResult() {
-        return new Matcher(this.parentPattern, matcher.toMatchResult());
+    public MatchResult2 toMatchResult() {
+        return new Matcher2(this.parentPattern, matcher.toMatchResult());
     }
 
     /**
@@ -186,7 +187,7 @@ public class Matcher implements MatchResult {
      * @param replacement The replacement string
      * @return The target string builder
      */
-    public Matcher appendReplacement(StringBuilder sb, String replacement) {
+    public Matcher2 appendReplacement(StringBuilder sb, String replacement) {
         matcher.appendReplacement(sb, parentPattern.replaceProperties(replacement));
         return this;
     }
@@ -367,7 +368,7 @@ public class Matcher implements MatchResult {
      * @param end The index to end searching at (exclusive)
      * @return this Matcher
      */
-    public Matcher region(int start, int end) {
+    public Matcher2 region(int start, int end) {
         matcher.region(start, end);
         return this;
     }
@@ -462,7 +463,7 @@ public class Matcher implements MatchResult {
      * @param b a boolean indicating whether or not to use anchoring bounds.
      * @return this Matcher
      */
-    public Matcher useAnchoringBounds(boolean b) {
+    public Matcher2 useAnchoringBounds(boolean b) {
         matcher.useAnchoringBounds(b);
         return this;
     }
@@ -473,7 +474,7 @@ public class Matcher implements MatchResult {
      * @param b a boolean indicating whether to use opaque or transparent regions
      * @return this Matcher
      */
-    public Matcher useTransparentBounds(boolean b) {
+    public Matcher2 useTransparentBounds(boolean b) {
         matcher.useTransparentBounds(b);
         return this;
     }
@@ -490,10 +491,10 @@ public class Matcher implements MatchResult {
         if (obj == null) {
             return false;
         }
-        if (!(obj instanceof Matcher)) {
+        if (!(obj instanceof Matcher2)) {
             return false;
         }
-        Matcher other = (Matcher)obj;
+        Matcher2 other = (Matcher2)obj;
         if (!parentPattern.equals(other.parentPattern)) {
             return false;
         }

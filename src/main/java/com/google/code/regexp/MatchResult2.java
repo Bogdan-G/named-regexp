@@ -17,6 +17,7 @@ package com.google.code.regexp;
 
 import java.util.List;
 import java.util.Map;
+import org.bogdang.modifications.regex.*;
 
 /**
  * The result of a match operation.
@@ -27,7 +28,7 @@ import java.util.Map;
  *
  * @since 0.1.9
  */
-public interface MatchResult extends java.org.bogdang.modifications.regex.MatchResult {
+public interface MatchResult2 extends MatchResult {
 
     /**
      * Returns the named capture groups in order

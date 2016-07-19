@@ -22,17 +22,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.org.bogdang.modifications.regex.PatternSyntaxException;
+import org.bogdang.modifications.regex.*;
 
 /**
  * A compiled representation of a regular expression. This is a wrapper
- * for the java.org.bogdang.modifications.regex.Pattern with support for named capturing
+ * for the Pattern with support for named capturing
  * groups. The named groups are specified with "(?&lt;name>exp)", which
  * is identical to Java 7 named groups.
  *
  * @since 0.1.9
  */
-public class Pattern implements Serializable {
+public class Pattern2 implements Serializable {
 
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -51,42 +51,42 @@ public class Pattern implements Serializable {
     private static final String NAME_PATTERN = "[^!=].*?";
 
     /** Pattern to match named capture groups in a pattern string */
-    private static final java.org.bogdang.modifications.regex.Pattern NAMED_GROUP_PATTERN = java.org.bogdang.modifications.regex.Pattern.compile("\\(\\?<(" + NAME_PATTERN + ")>", java.org.bogdang.modifications.regex.Pattern.DOTALL);
+    private static final Pattern NAMED_GROUP_PATTERN = Pattern.compile("\\(\\?<(" + NAME_PATTERN + ")>", Pattern.DOTALL);
 
     /** Pattern to match back references for named capture groups */
-    private static final java.org.bogdang.modifications.regex.Pattern BACKREF_NAMED_GROUP_PATTERN = java.org.bogdang.modifications.regex.Pattern.compile("\\\\k<(" + NAME_PATTERN + ")>", java.org.bogdang.modifications.regex.Pattern.DOTALL);
+    private static final Pattern BACKREF_NAMED_GROUP_PATTERN = Pattern.compile("\\\\k<(" + NAME_PATTERN + ")>", Pattern.DOTALL);
 
     /** Pattern to match properties for named capture groups in a replacement string */
-    private static final java.org.bogdang.modifications.regex.Pattern PROPERTY_PATTERN = java.org.bogdang.modifications.regex.Pattern.compile("\\$\\{(" + NAME_PATTERN + ")\\}", java.org.bogdang.modifications.regex.Pattern.DOTALL);
+    private static final Pattern PROPERTY_PATTERN = Pattern.compile("\\$\\{(" + NAME_PATTERN + ")\\}", Pattern.DOTALL);
 
     /** index of group within patterns above where group name is captured */
     private static final int INDEX_GROUP_NAME = 1;
 
-    /** @see {@link java.org.bogdang.modifications.regex.Pattern#UNIX_LINES} */
-    public static final int UNIX_LINES = java.org.bogdang.modifications.regex.Pattern.UNIX_LINES;
+    /** @see {@link Pattern#UNIX_LINES} */
+    public static final int UNIX_LINES = Pattern.UNIX_LINES;
 
-    /** @see {@link java.org.bogdang.modifications.regex.Pattern#CASE_INSENSITIVE */
-    public static final int CASE_INSENSITIVE = java.org.bogdang.modifications.regex.Pattern.CASE_INSENSITIVE;
+    /** @see {@link Pattern#CASE_INSENSITIVE */
+    public static final int CASE_INSENSITIVE = Pattern.CASE_INSENSITIVE;
 
-    /** @see {@link java.org.bogdang.modifications.regex.Pattern#COMMENTS} */
-    public static final int COMMENTS = java.org.bogdang.modifications.regex.Pattern.COMMENTS;
+    /** @see {@link Pattern#COMMENTS} */
+    public static final int COMMENTS = Pattern.COMMENTS;
 
-    /** @see {@link java.org.bogdang.modifications.regex.Pattern#MULTILINE} */
-    public static final int MULTILINE = java.org.bogdang.modifications.regex.Pattern.MULTILINE;
+    /** @see {@link Pattern#MULTILINE} */
+    public static final int MULTILINE = Pattern.MULTILINE;
 
-    /** @see {@link java.org.bogdang.modifications.regex.Pattern#LITERAL} */
-    public static final int LITERAL = java.org.bogdang.modifications.regex.Pattern.LITERAL;
+    /** @see {@link Pattern#LITERAL} */
+    public static final int LITERAL = Pattern.LITERAL;
 
-    /** @see {@link java.org.bogdang.modifications.regex.Pattern#DOTALL} */
-    public static final int DOTALL = java.org.bogdang.modifications.regex.Pattern.DOTALL;
+    /** @see {@link Pattern#DOTALL} */
+    public static final int DOTALL = Pattern.DOTALL;
 
-    /** @see {@link java.org.bogdang.modifications.regex.Pattern#UNICODE_CASE} */
-    public static final int UNICODE_CASE = java.org.bogdang.modifications.regex.Pattern.UNICODE_CASE;
+    /** @see {@link Pattern#UNICODE_CASE} */
+    public static final int UNICODE_CASE = Pattern.UNICODE_CASE;
 
-    /** @see @link {@link java.org.bogdang.modifications.regex.Pattern#CANON_EQ} */
-    public static final int CANON_EQ = java.org.bogdang.modifications.regex.Pattern.CANON_EQ;
+    /** @see @link {@link Pattern#CANON_EQ} */
+    public static final int CANON_EQ = Pattern.CANON_EQ;
 
-    private java.org.bogdang.modifications.regex.Pattern pattern;
+    private Pattern pattern;
     private String namedPattern;
     private List<String> groupNames;
     private Map<String,List<GroupInfo> > groupInfo;
@@ -97,17 +97,17 @@ public class Pattern implements Serializable {
      * @param regex the expression to be compiled
      * @param flags Match flags, a bit mask that may include:
      * <ul>
-     *   <li>{@link java.org.bogdang.modifications.regex.Pattern#CASE_INSENSITIVE}</li>
-     *   <li>{@link java.org.bogdang.modifications.regex.Pattern#MULTILINE}</li>
-     *   <li>{@link java.org.bogdang.modifications.regex.Pattern#DOTALL}</li>
-     *   <li>{@link java.org.bogdang.modifications.regex.Pattern#UNICODE_CASE}</li>
-     *   <li>{@link java.org.bogdang.modifications.regex.Pattern#CANON_EQ}</li>
-     *   <li>{@link java.org.bogdang.modifications.regex.Pattern#UNIX_LINES}</li>
-     *   <li>{@link java.org.bogdang.modifications.regex.Pattern#LITERAL}</li>
-     *   <li>{@link java.org.bogdang.modifications.regex.Pattern#COMMENTS}</li>
+     *   <li>{@link Pattern#CASE_INSENSITIVE}</li>
+     *   <li>{@link Pattern#MULTILINE}</li>
+     *   <li>{@link Pattern#DOTALL}</li>
+     *   <li>{@link Pattern#UNICODE_CASE}</li>
+     *   <li>{@link Pattern#CANON_EQ}</li>
+     *   <li>{@link Pattern#UNIX_LINES}</li>
+     *   <li>{@link Pattern#LITERAL}</li>
+     *   <li>{@link Pattern#COMMENTS}</li>
      * </ul>
      */
-    protected Pattern(String regex, int flags) {
+    protected Pattern2(String regex, int flags) {
         namedPattern = regex;
 
         // group info must be parsed before building the standard pattern
@@ -123,8 +123,8 @@ public class Pattern implements Serializable {
      * @param regex the expression to be compiled
      * @return the pattern
      */
-    public static Pattern compile(String regex) {
-        return new Pattern(regex, 0);
+    public static Pattern2 compile(String regex) {
+        return new Pattern2(regex, 0);
     }
 
     /**
@@ -133,19 +133,19 @@ public class Pattern implements Serializable {
      * @param regex the expression to be compiled
      * @param flags Match flags, a bit mask that may include:
      * <ul>
-     *   <li>{@link java.org.bogdang.modifications.regex.Pattern#CASE_INSENSITIVE}</li>
-     *   <li>{@link java.org.bogdang.modifications.regex.Pattern#MULTILINE}</li>
-     *   <li>{@link java.org.bogdang.modifications.regex.Pattern#DOTALL}</li>
-     *   <li>{@link java.org.bogdang.modifications.regex.Pattern#UNICODE_CASE}</li>
-     *   <li>{@link java.org.bogdang.modifications.regex.Pattern#CANON_EQ}</li>
-     *   <li>{@link java.org.bogdang.modifications.regex.Pattern#UNIX_LINES}</li>
-     *   <li>{@link java.org.bogdang.modifications.regex.Pattern#LITERAL}</li>
-     *   <li>{@link java.org.bogdang.modifications.regex.Pattern#COMMENTS}</li>
+     *   <li>{@link Pattern#CASE_INSENSITIVE}</li>
+     *   <li>{@link Pattern#MULTILINE}</li>
+     *   <li>{@link Pattern#DOTALL}</li>
+     *   <li>{@link Pattern#UNICODE_CASE}</li>
+     *   <li>{@link Pattern#CANON_EQ}</li>
+     *   <li>{@link Pattern#UNIX_LINES}</li>
+     *   <li>{@link Pattern#LITERAL}</li>
+     *   <li>{@link Pattern#COMMENTS}</li>
      * </ul>
      * @return the pattern
      */
-    public static Pattern compile(String regex, int flags) {
-        return new Pattern(regex, flags);
+    public static Pattern2 compile(String regex, int flags) {
+        return new Pattern2(regex, flags);
     }
 
     /**
@@ -193,15 +193,15 @@ public class Pattern implements Serializable {
      * @param input The character sequence to be matched
      * @return A new matcher for this pattern
      */
-    public Matcher matcher(CharSequence input) {
-        return new Matcher(this, input);
+    public Matcher2 matcher(CharSequence input) {
+        return new Matcher2(this, input);
     }
 
     /**
-     * Returns the wrapped {@link java.org.bogdang.modifications.regex.Pattern}
+     * Returns the wrapped {@link Pattern}
      * @return the pattern
      */
-    public java.org.bogdang.modifications.regex.Pattern pattern() {
+    public Pattern pattern() {
         return pattern;
     }
 
@@ -469,8 +469,8 @@ public class Pattern implements Serializable {
      * @return number of open parentheses
      */
     static private int countOpenParens(String s, int pos) {
-        java.org.bogdang.modifications.regex.Pattern p = java.org.bogdang.modifications.regex.Pattern.compile("\\(");
-        java.org.bogdang.modifications.regex.Matcher m = p.matcher(s.subSequence(0, pos));
+        Pattern p = Pattern.compile("\\(");
+        Matcher m = p.matcher(s.subSequence(0, pos));
 
         int numParens = 0;
 
@@ -499,7 +499,7 @@ public class Pattern implements Serializable {
      */
     static public Map<String,List<GroupInfo> > extractGroupInfo(String namedPattern) {
         Map<String,List<GroupInfo> > groupInfo = new LinkedHashMap<String,List<GroupInfo> >();
-        java.org.bogdang.modifications.regex.Matcher matcher = NAMED_GROUP_PATTERN.matcher(namedPattern);
+        Matcher matcher = NAMED_GROUP_PATTERN.matcher(namedPattern);
         while(matcher.find()) {
 
             int pos = matcher.start();
@@ -531,8 +531,8 @@ public class Pattern implements Serializable {
      * @param replacement the string to replace the target
      * @return the modified string (original instance of {@code input})
      */
-    static private StringBuilder replace(StringBuilder input, java.org.bogdang.modifications.regex.Pattern pattern, String replacement) {
-        java.org.bogdang.modifications.regex.Matcher m = pattern.matcher(input);
+    static private StringBuilder replace(StringBuilder input, Pattern pattern, String replacement) {
+        Matcher m = pattern.matcher(input);
         while (m.find()) {
             if (isEscapedChar(input.toString(), m.start())) {
                 continue;
@@ -559,8 +559,8 @@ public class Pattern implements Serializable {
      * @return the modified string (original instance of {@code input})
      * @throws PatternSyntaxException group name was not found
      */
-    private StringBuilder replaceGroupNameWithIndex(StringBuilder input, java.org.bogdang.modifications.regex.Pattern pattern, String prefix) {
-        java.org.bogdang.modifications.regex.Matcher m = pattern.matcher(input);
+    private StringBuilder replaceGroupNameWithIndex(StringBuilder input, Pattern pattern, String prefix) {
+        Matcher m = pattern.matcher(input);
         while (m.find()) {
             if (isEscapedChar(input.toString(), m.start())) {
                 continue;
@@ -583,30 +583,30 @@ public class Pattern implements Serializable {
     }
 
     /**
-     * Builds a {@code java.org.bogdang.modifications.regex.Pattern} from a given regular expression
+     * Builds a {@code Pattern} from a given regular expression
      * pattern (which may contain named groups) and flags
      *
      * @param namedPattern the expression to be compiled
      * @param flags Match flags, a bit mask that may include:
      * <ul>
-     *   <li>{@link java.org.bogdang.modifications.regex.Pattern#CASE_INSENSITIVE}</li>
-     *   <li>{@link java.org.bogdang.modifications.regex.Pattern#MULTILINE}</li>
-     *   <li>{@link java.org.bogdang.modifications.regex.Pattern#DOTALL}</li>
-     *   <li>{@link java.org.bogdang.modifications.regex.Pattern#UNICODE_CASE}</li>
-     *   <li>{@link java.org.bogdang.modifications.regex.Pattern#CANON_EQ}</li>
-     *   <li>{@link java.org.bogdang.modifications.regex.Pattern#UNIX_LINES}</li>
-     *   <li>{@link java.org.bogdang.modifications.regex.Pattern#LITERAL}</li>
-     *   <li>{@link java.org.bogdang.modifications.regex.Pattern#COMMENTS}</li>
+     *   <li>{@link Pattern#CASE_INSENSITIVE}</li>
+     *   <li>{@link Pattern#MULTILINE}</li>
+     *   <li>{@link Pattern#DOTALL}</li>
+     *   <li>{@link Pattern#UNICODE_CASE}</li>
+     *   <li>{@link Pattern#CANON_EQ}</li>
+     *   <li>{@link Pattern#UNIX_LINES}</li>
+     *   <li>{@link Pattern#LITERAL}</li>
+     *   <li>{@link Pattern#COMMENTS}</li>
      * </ul>
-     * @return the standard {@code java.org.bogdang.modifications.regex.Pattern}
+     * @return the standard {@code Pattern}
      */
-    private java.org.bogdang.modifications.regex.Pattern buildStandardPattern(String namedPattern, Integer flags) {
+    private Pattern buildStandardPattern(String namedPattern, Integer flags) {
         // replace the named-group construct with left-paren but
         // make sure we're actually looking at the construct (ignore escapes)
         StringBuilder s = new StringBuilder(namedPattern);
         s = replace(s, NAMED_GROUP_PATTERN, "(");
         s = replaceGroupNameWithIndex(s, BACKREF_NAMED_GROUP_PATTERN, "\\");
-        return java.org.bogdang.modifications.regex.Pattern.compile(s.toString(), flags);
+        return Pattern.compile(s.toString(), flags);
     }
 
     /**
@@ -656,10 +656,10 @@ public class Pattern implements Serializable {
         if (obj == null) {
             return false;
         }
-        if (!(obj instanceof Pattern)) {
+        if (!(obj instanceof Pattern2)) {
             return false;
         }
-        Pattern other = (Pattern)obj;
+        Pattern2 other = (Pattern2)obj;
 
         boolean groupNamesMatch = (groupNames == null && other.groupNames == null) ||
                                   (groupNames != null && !Collections.disjoint(groupNames, other.groupNames));
