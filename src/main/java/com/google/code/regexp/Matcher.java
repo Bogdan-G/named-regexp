@@ -22,18 +22,18 @@ import java.util.Map;
 
 /**
  * An engine that performs match operations on a character sequence by
- * interpreting a {@link Pattern}. This is a wrapper for {@link java.util.regex.Matcher}.
+ * interpreting a {@link Pattern}. This is a wrapper for {@link java.org.bogdang.modifications.regex.Matcher}.
  *
  * @since 0.1.9
  */
 public class Matcher implements MatchResult {
 
-    private java.util.regex.Matcher matcher;
+    private java.org.bogdang.modifications.regex.Matcher matcher;
     private Pattern parentPattern;
 
-    Matcher(Pattern parentPattern, java.util.regex.MatchResult matcher) {
+    Matcher(Pattern parentPattern, java.org.bogdang.modifications.regex.MatchResult matcher) {
         this.parentPattern = parentPattern;
-        this.matcher = (java.util.regex.Matcher) matcher;
+        this.matcher = (java.org.bogdang.modifications.regex.Matcher) matcher;
     }
 
     Matcher(Pattern parentPattern, CharSequence input) {
@@ -46,7 +46,7 @@ public class Matcher implements MatchResult {
      *
      * @return the pattern
      */
-    public java.util.regex.Pattern standardPattern() {
+    public java.org.bogdang.modifications.regex.Pattern standardPattern() {
         return matcher.pattern();
     }
 
@@ -182,11 +182,11 @@ public class Matcher implements MatchResult {
     /**
      * Implements a non-terminal append-and-replace step.
      *
-     * @param sb The target string buffer
+     * @param sb The target string builder
      * @param replacement The replacement string
-     * @return The target string buffer
+     * @return The target string builder
      */
-    public Matcher appendReplacement(StringBuffer sb, String replacement) {
+    public Matcher appendReplacement(StringBuilder sb, String replacement) {
         matcher.appendReplacement(sb, parentPattern.replaceProperties(replacement));
         return this;
     }
@@ -197,7 +197,7 @@ public class Matcher implements MatchResult {
      * @param sb The target string buffer
      * @return The target string buffer
      */
-    public StringBuffer appendTail(StringBuffer sb) {
+    public StringBuilder appendTail(StringBuilder sb) {
         return matcher.appendTail(sb);
     }
 

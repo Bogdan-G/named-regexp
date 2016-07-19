@@ -17,7 +17,7 @@ package com.google.code.regexp;
 
 import java.util.List;
 import java.util.Map;
-import java.util.regex.PatternSyntaxException;
+import java.org.bogdang.modifications.regex.PatternSyntaxException;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -442,7 +442,7 @@ public class MatcherTest {
     @Test
     public void testAppendReplacementReturnsOrigInstance() {
         M1.find();
-        assertEquals(M1, M1.appendReplacement(new StringBuffer("foo"), "bar"));
+        assertEquals(M1, M1.appendReplacement(new StringBuilder("foo"), "bar"));
     }
 
     @Test
@@ -452,7 +452,7 @@ public class MatcherTest {
         // given buffer. Note the result is a substring of the full string,
         // from the beginning of the string up to the last character of the
         // replacement string.
-        StringBuffer sb = new StringBuffer("origText ");
+        StringBuilder sb = new StringBuilder("origText ");
         M1.find();
         M1.appendReplacement(sb, "foo");
         assertEquals("origText Lorem foo", sb.toString());
@@ -463,7 +463,7 @@ public class MatcherTest {
 
     @Test
     public void testAppendReplacementWithNamedRefs() {
-        StringBuffer sb = new StringBuffer("origText ");
+        StringBuilder sb = new StringBuilder("origText ");
         M1.find();
         M1.appendReplacement(sb, "${named}foo ${named}bar");
         assertEquals("origText Lorem foofoo foobar", sb.toString());
@@ -475,12 +475,12 @@ public class MatcherTest {
         thrown.expectMessage("unknown group name near index 2\n" +
                              "${nonexistentName} foobar!\n" +
                              "  ^");
-        M1.appendReplacement(new StringBuffer(), "${nonexistentName} foobar!");
+        M1.appendReplacement(new StringBuilder(), "${nonexistentName} foobar!");
     }
 
     @Test
     public void testAppendTailAppendsRemainderToBuffer() {
-        StringBuffer sb = new StringBuffer("origText ");
+        StringBuilder sb = new StringBuilder("origText ");
         M1.find();
         M1.appendReplacement(sb, "foo");
 

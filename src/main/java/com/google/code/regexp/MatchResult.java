@@ -27,7 +27,7 @@ import java.util.Map;
  *
  * @since 0.1.9
  */
-public interface MatchResult extends java.util.regex.MatchResult {
+public interface MatchResult extends java.org.bogdang.modifications.regex.MatchResult {
 
     /**
      * Returns the named capture groups in order

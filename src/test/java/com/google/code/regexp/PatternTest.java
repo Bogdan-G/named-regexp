@@ -23,7 +23,7 @@ import static org.junit.Assert.assertFalse;
 
 import java.util.List;
 import java.util.Map;
-import java.util.regex.PatternSyntaxException;
+import java.org.bogdang.modifications.regex.PatternSyntaxException;
 
 import org.junit.Rule;
 import org.junit.Test;
